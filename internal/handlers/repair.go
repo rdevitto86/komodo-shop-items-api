@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"encoding/json"
 	"net/http"
 	"os"
 	"strconv"
@@ -61,7 +60,7 @@ func GetRepairServices(wtr http.ResponseWriter, req *http.Request) {
 	}
 
 	wtr.WriteHeader(http.StatusOK)
-	json.NewEncoder(wtr).Encode(resp)
+	writeJSON(wtr, resp)
 }
 
 // GetRepairService handles GET /services/repair/{id}.
@@ -99,7 +98,7 @@ func GetRepairService(wtr http.ResponseWriter, req *http.Request) {
 	}
 
 	wtr.WriteHeader(http.StatusOK)
-	json.NewEncoder(wtr).Encode(svc)
+	writeJSON(wtr, svc)
 }
 
 // parsePaginationParams reads ?page=N&limit=N from the request, applying

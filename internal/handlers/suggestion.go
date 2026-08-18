@@ -79,6 +79,10 @@ func GetSuggestions(wtr http.ResponseWriter, req *http.Request) {
 		return
 	}
 
+	writeResponse(wtr, rankBySellThrough(products, inv, excluded, limit))
+}
+
+func rankBySellThrough(products []models.Product, inv *models.InventoryResponse, excluded map[string]struct{}, limit int) []models.Product {
 	// Build a lookup of SKU → stockQty from the inventory manifest.
 	// Items missing from the manifest are treated as having unknown stock
 	// and sorted to the back.
@@ -138,8 +142,7 @@ func GetSuggestions(wtr http.ResponseWriter, req *http.Request) {
 		}
 		suggestions = append(suggestions, c.product)
 	}
-
-	writeResponse(wtr, suggestions)
+	return suggestions
 }
 
 // primarySKU returns the SKU that identifies this product in the inventory

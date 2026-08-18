@@ -1,19 +1,19 @@
 package main
 
 import (
+	"context"
 	"komodo-shop-items-api/internal/config"
 	"komodo-shop-items-api/internal/handlers"
 	"komodo-shop-items-api/internal/store"
-	"context"
 	"net/http"
 	"os"
 	"time"
 
-	awsS3 "github.com/rdevitto86/komodo-forge-sdk-go/aws/s3"
-	awsSM "github.com/rdevitto86/komodo-forge-sdk-go/aws/secretsmanager"
 	"github.com/rdevitto86/komodo-forge-sdk-go/api/handlers/health"
 	mw "github.com/rdevitto86/komodo-forge-sdk-go/api/middleware"
 	srv "github.com/rdevitto86/komodo-forge-sdk-go/api/server"
+	awsS3 "github.com/rdevitto86/komodo-forge-sdk-go/aws/s3"
+	awsSM "github.com/rdevitto86/komodo-forge-sdk-go/aws/secretsmanager"
 	logger "github.com/rdevitto86/komodo-forge-sdk-go/logging/runtime"
 )
 
@@ -58,7 +58,10 @@ func main() {
 		os.Exit(1)
 	}
 	for k, v := range secrets {
-		os.Setenv(k, v)
+		if err := os.Setenv(k, v); err != nil {
+			logger.Fatal("failed to set secret environment variable", err)
+			os.Exit(1)
+		}
 	}
 	logger.Info("aws secrets manager initialized successfully")
 

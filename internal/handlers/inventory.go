@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"encoding/json"
 	"net/http"
 	"os"
 
@@ -33,5 +32,5 @@ func GetInventory(wtr http.ResponseWriter, req *http.Request) {
 	}
 
 	wtr.WriteHeader(http.StatusOK)
-	json.NewEncoder(wtr).Encode(inventory)
+	writeJSON(wtr, inventory)
 }

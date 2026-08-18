@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"encoding/json"
 	"net/http"
 	"os"
 
@@ -35,14 +34,14 @@ func GetItemBySKU(wtr http.ResponseWriter, req *http.Request) {
 	product, err := store.FetchProductBySKU(req.Context(), bucket, sku)
 	if err == nil {
 		wtr.WriteHeader(http.StatusOK)
-		json.NewEncoder(wtr).Encode(product)
+		writeJSON(wtr, product)
 		return
 	}
 
 	service, err := store.FetchServiceBySKU(req.Context(), bucket, sku)
 	if err == nil {
 		wtr.WriteHeader(http.StatusOK)
-		json.NewEncoder(wtr).Encode(service)
+		writeJSON(wtr, service)
 		return
 	}
 
